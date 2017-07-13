@@ -1,4 +1,7 @@
-CFLAGS=-Wall	-g
-
-clean:
-	rm	-f	hashmap
+hashmap: hashmap.o \
+      dbg.o \
+      color.o \
+      bstrlib.o
+      
+<Tab>$(CXX) $(CXXFLAGS) -o hashmap \
+           hashmap.o hashmap.o hashmap.o
