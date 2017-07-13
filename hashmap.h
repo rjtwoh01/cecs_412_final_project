@@ -2,7 +2,7 @@
 #define _lcthw_Hashmap_h
 
 #include <stdint.h>
-#include <lcthw/darray.h>
+#include <darray.h>
 
 #define DEFAULT_NUMBER_OF_BUCKETS 100
 

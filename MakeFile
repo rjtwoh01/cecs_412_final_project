@@ -1,7 +1,8 @@
 hashmap: hashmap.o \
       dbg.o \
       color.o \
-      bstrlib.o
+      bstrlib.o \
+      darray.o
       
 <Tab>$(CXX) $(CXXFLAGS) -o hashmap \
            hashmap.o hashmap.o hashmap.o
