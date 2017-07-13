@@ -99,7 +99,7 @@ static inline DArray *Hashmap_find_bucket(Hashmap *map, void *key, int create, u
 	int bucket_n = hash % DEFAULT_NUMBER_OF_BUCKETS;
 	check (bucket_n >= 0, "Invalid bucket found: %d", bucket_n);
 	//store it for the return so the caller can use it
-	*hash_count = hash;
+	*has_out = hash;
 	
 	DArray *bucket = DArray_get(map->buckets, bucket_n);
 	
@@ -115,3 +115,5 @@ static inline DArray *Hashmap_find_bucket(Hashmap *map, void *key, int create, u
 error:
 	return NULL;
 }
+
+
