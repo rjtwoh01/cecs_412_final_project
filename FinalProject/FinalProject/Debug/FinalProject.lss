@@ -13,21 +13,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .debug_aranges 00000060  00000000  00000000  00000470  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00004036  00000000  00000000  000004d0  2**0
+  5 .debug_info   0000409b  00000000  00000000  000004d0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 0000330b  00000000  00000000  00004506  2**0
+  6 .debug_abbrev 00003340  00000000  00000000  0000456b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00001284  00000000  00000000  00007811  2**0
+  7 .debug_line   00001559  00000000  00000000  000078ab  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000078  00000000  00000000  00008a98  2**2
+  8 .debug_frame  00000078  00000000  00000000  00008e04  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    0002c5b7  00000000  00000000  00008b10  2**0
+  9 .debug_str    0002dd85  00000000  00000000  00008e7c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000460  00000000  00000000  000350c7  2**0
+ 10 .debug_loc    00000460  00000000  00000000  00036c01  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000030  00000000  00000000  00035527  2**0
+ 11 .debug_ranges 00000030  00000000  00000000  00037061  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  00009adf  00000000  00000000  00035557  2**0
+ 12 .debug_macro  00000b05  00000000  00000000  00037091  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -551,9 +551,9 @@ static inline void ioport_configure_pin(port_pin_t pin, port_pin_flags_t flags)
  398:	08 95       	ret
 
 0000039a <main>:
- * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
- */
-#include <asf.h>
+#include <st7565r.h>
+#include <conf_usart_example.h>
+#include "led.h"
 
 int main (void)
 {
