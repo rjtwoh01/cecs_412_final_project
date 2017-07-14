@@ -1,0 +1,10 @@
+CC = gcc
+CFLAGS=-Wall	-g
+deps	hashmap.h	color.h	dbg.h
+
+
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+clean:
+	rm	-f	hashmap
