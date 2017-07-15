@@ -3,31 +3,31 @@ FinalProject.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000003a6  00000000  00000000  00000054  2**1
+  0 .text         0000042c  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000000  00802000  00802000  000003fa  2**0
+  1 .data         00000000  00802000  00802000  00000480  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .comment      00000030  00000000  00000000  000003fa  2**0
+  2 .comment      00000030  00000000  00000000  00000480  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 00000044  00000000  00000000  0000042c  2**2
+  3 .note.gnu.avr.deviceinfo 00000044  00000000  00000000  000004b0  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000060  00000000  00000000  00000470  2**0
+  4 .debug_aranges 000000c0  00000000  00000000  000004f8  2**3
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   0000409b  00000000  00000000  000004d0  2**0
+  5 .debug_info   00004d11  00000000  00000000  000005b8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00003340  00000000  00000000  0000456b  2**0
+  6 .debug_abbrev 0000369b  00000000  00000000  000052c9  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00001559  00000000  00000000  000078ab  2**0
+  7 .debug_line   00001c8d  00000000  00000000  00008964  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000078  00000000  00000000  00008e04  2**2
+  8 .debug_frame  0000011c  00000000  00000000  0000a5f4  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    0002dd85  00000000  00000000  00008e7c  2**0
+  9 .debug_str    0002e167  00000000  00000000  0000a710  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000460  00000000  00000000  00036c01  2**0
+ 10 .debug_loc    000007b2  00000000  00000000  00038877  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000030  00000000  00000000  00037061  2**0
+ 11 .debug_ranges 00000060  00000000  00000000  00039029  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  00000b05  00000000  00000000  00037091  2**0
+ 12 .debug_macro  00000d06  00000000  00000000  00039089  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -297,273 +297,299 @@ Disassembly of section .text:
  206:	de bf       	out	0x3e, r29	; 62
  208:	00 e0       	ldi	r16, 0x00	; 0
  20a:	0c bf       	out	0x3c, r16	; 60
- 20c:	c6 d0       	rcall	.+396    	; 0x39a <main>
- 20e:	c9 c0       	rjmp	.+402    	; 0x3a2 <_exit>
+ 20c:	05 d1       	rcall	.+522    	; 0x418 <main>
+ 20e:	0c c1       	rjmp	.+536    	; 0x428 <_exit>
 
 00000210 <__bad_interrupt>:
  210:	f7 ce       	rjmp	.-530    	; 0x0 <__vectors>
 
-00000212 <ioport_configure_port_pin>:
-#include "ioport_compat.h"
-
-#if defined(IOPORT_XMEGA_COMPAT)
-void ioport_configure_port_pin(void *port, pin_mask_t pin_mask,
-		port_pin_flags_t flags)
-{
+00000212 <sysclk_init>:
  212:	cf 93       	push	r28
  214:	df 93       	push	r29
- 216:	fc 01       	movw	r30, r24
-	uint8_t pin;
+ 216:	1f 92       	push	r1
+ 218:	1f 92       	push	r1
+ 21a:	cd b7       	in	r28, 0x3d	; 61
+ 21c:	de b7       	in	r29, 0x3e	; 62
+ 21e:	8f ef       	ldi	r24, 0xFF	; 255
+ 220:	80 93 70 00 	sts	0x0070, r24	; 0x800070 <__TEXT_REGION_LENGTH__+0x700070>
+ 224:	80 93 71 00 	sts	0x0071, r24	; 0x800071 <__TEXT_REGION_LENGTH__+0x700071>
+ 228:	80 93 72 00 	sts	0x0072, r24	; 0x800072 <__TEXT_REGION_LENGTH__+0x700072>
+ 22c:	80 93 73 00 	sts	0x0073, r24	; 0x800073 <__TEXT_REGION_LENGTH__+0x700073>
+ 230:	80 93 74 00 	sts	0x0074, r24	; 0x800074 <__TEXT_REGION_LENGTH__+0x700074>
+ 234:	80 93 75 00 	sts	0x0075, r24	; 0x800075 <__TEXT_REGION_LENGTH__+0x700075>
+ 238:	80 93 76 00 	sts	0x0076, r24	; 0x800076 <__TEXT_REGION_LENGTH__+0x700076>
+ 23c:	6c e0       	ldi	r22, 0x0C	; 12
+ 23e:	81 e4       	ldi	r24, 0x41	; 65
+ 240:	90 e0       	ldi	r25, 0x00	; 0
+ 242:	20 d0       	rcall	.+64     	; 0x284 <ccp_write_io>
+ 244:	8f b7       	in	r24, 0x3f	; 63
+ 246:	8a 83       	std	Y+2, r24	; 0x02
+ 248:	f8 94       	cli
+ 24a:	9a 81       	ldd	r25, Y+2	; 0x02
+ 24c:	e0 e5       	ldi	r30, 0x50	; 80
+ 24e:	f0 e0       	ldi	r31, 0x00	; 0
+ 250:	80 81       	ld	r24, Z
+ 252:	82 60       	ori	r24, 0x02	; 2
+ 254:	80 83       	st	Z, r24
+ 256:	9f bf       	out	0x3f, r25	; 63
+ 258:	81 81       	ldd	r24, Z+1	; 0x01
+ 25a:	81 ff       	sbrs	r24, 1
+ 25c:	fd cf       	rjmp	.-6      	; 0x258 <sysclk_init+0x46>
+ 25e:	61 e0       	ldi	r22, 0x01	; 1
+ 260:	80 e4       	ldi	r24, 0x40	; 64
+ 262:	90 e0       	ldi	r25, 0x00	; 0
+ 264:	0f d0       	rcall	.+30     	; 0x284 <ccp_write_io>
+ 266:	8f b7       	in	r24, 0x3f	; 63
+ 268:	89 83       	std	Y+1, r24	; 0x01
+ 26a:	f8 94       	cli
+ 26c:	99 81       	ldd	r25, Y+1	; 0x01
+ 26e:	e0 e5       	ldi	r30, 0x50	; 80
+ 270:	f0 e0       	ldi	r31, 0x00	; 0
+ 272:	80 81       	ld	r24, Z
+ 274:	8e 7f       	andi	r24, 0xFE	; 254
+ 276:	80 83       	st	Z, r24
+ 278:	9f bf       	out	0x3f, r25	; 63
+ 27a:	0f 90       	pop	r0
+ 27c:	0f 90       	pop	r0
+ 27e:	df 91       	pop	r29
+ 280:	cf 91       	pop	r28
+ 282:	08 95       	ret
 
-	for (pin = 0; pin < 8; pin++) {
-		if (pin_mask & (1 << pin)) {
-			*((uint8_t *)port + PORT_PIN0CTRL + pin) = flags >> 8;
- 218:	20 e0       	ldi	r18, 0x00	; 0
- 21a:	30 e0       	ldi	r19, 0x00	; 0
-		port_pin_flags_t flags)
-{
-	uint8_t pin;
+00000284 <ccp_write_io>:
+ 284:	1b be       	out	0x3b, r1	; 59
+ 286:	fc 01       	movw	r30, r24
+ 288:	28 ed       	ldi	r18, 0xD8	; 216
+ 28a:	24 bf       	out	0x34, r18	; 52
+ 28c:	60 83       	st	Z, r22
+ 28e:	08 95       	ret
 
-	for (pin = 0; pin < 8; pin++) {
-		if (pin_mask & (1 << pin)) {
- 21c:	c6 2f       	mov	r28, r22
- 21e:	d0 e0       	ldi	r29, 0x00	; 0
- 220:	de 01       	movw	r26, r28
- 222:	02 2e       	mov	r0, r18
- 224:	02 c0       	rjmp	.+4      	; 0x22a <ioport_configure_port_pin+0x18>
- 226:	b5 95       	asr	r27
- 228:	a7 95       	ror	r26
- 22a:	0a 94       	dec	r0
- 22c:	e2 f7       	brpl	.-8      	; 0x226 <ioport_configure_port_pin+0x14>
- 22e:	a0 fd       	sbrc	r26, 0
-			*((uint8_t *)port + PORT_PIN0CTRL + pin) = flags >> 8;
- 230:	50 8b       	std	Z+16, r21	; 0x10
- 232:	2f 5f       	subi	r18, 0xFF	; 255
- 234:	3f 4f       	sbci	r19, 0xFF	; 255
- 236:	31 96       	adiw	r30, 0x01	; 1
-void ioport_configure_port_pin(void *port, pin_mask_t pin_mask,
-		port_pin_flags_t flags)
-{
-	uint8_t pin;
+00000290 <ioport_configure_port_pin>:
+ 290:	cf 93       	push	r28
+ 292:	df 93       	push	r29
+ 294:	fc 01       	movw	r30, r24
+ 296:	20 e0       	ldi	r18, 0x00	; 0
+ 298:	30 e0       	ldi	r19, 0x00	; 0
+ 29a:	c6 2f       	mov	r28, r22
+ 29c:	d0 e0       	ldi	r29, 0x00	; 0
+ 29e:	de 01       	movw	r26, r28
+ 2a0:	02 2e       	mov	r0, r18
+ 2a2:	02 c0       	rjmp	.+4      	; 0x2a8 <ioport_configure_port_pin+0x18>
+ 2a4:	b5 95       	asr	r27
+ 2a6:	a7 95       	ror	r26
+ 2a8:	0a 94       	dec	r0
+ 2aa:	e2 f7       	brpl	.-8      	; 0x2a4 <ioport_configure_port_pin+0x14>
+ 2ac:	a0 fd       	sbrc	r26, 0
+ 2ae:	50 8b       	std	Z+16, r21	; 0x10
+ 2b0:	2f 5f       	subi	r18, 0xFF	; 255
+ 2b2:	3f 4f       	sbci	r19, 0xFF	; 255
+ 2b4:	31 96       	adiw	r30, 0x01	; 1
+ 2b6:	28 30       	cpi	r18, 0x08	; 8
+ 2b8:	31 05       	cpc	r19, r1
+ 2ba:	89 f7       	brne	.-30     	; 0x29e <ioport_configure_port_pin+0xe>
+ 2bc:	40 ff       	sbrs	r20, 0
+ 2be:	0a c0       	rjmp	.+20     	; 0x2d4 <ioport_configure_port_pin+0x44>
+ 2c0:	41 ff       	sbrs	r20, 1
+ 2c2:	03 c0       	rjmp	.+6      	; 0x2ca <ioport_configure_port_pin+0x3a>
+ 2c4:	fc 01       	movw	r30, r24
+ 2c6:	65 83       	std	Z+5, r22	; 0x05
+ 2c8:	02 c0       	rjmp	.+4      	; 0x2ce <ioport_configure_port_pin+0x3e>
+ 2ca:	fc 01       	movw	r30, r24
+ 2cc:	66 83       	std	Z+6, r22	; 0x06
+ 2ce:	fc 01       	movw	r30, r24
+ 2d0:	61 83       	std	Z+1, r22	; 0x01
+ 2d2:	02 c0       	rjmp	.+4      	; 0x2d8 <ioport_configure_port_pin+0x48>
+ 2d4:	fc 01       	movw	r30, r24
+ 2d6:	62 83       	std	Z+2, r22	; 0x02
+ 2d8:	df 91       	pop	r29
+ 2da:	cf 91       	pop	r28
+ 2dc:	08 95       	ret
 
-	for (pin = 0; pin < 8; pin++) {
- 238:	28 30       	cpi	r18, 0x08	; 8
- 23a:	31 05       	cpc	r19, r1
- 23c:	89 f7       	brne	.-30     	; 0x220 <ioport_configure_port_pin+0xe>
-		if (pin_mask & (1 << pin)) {
-			*((uint8_t *)port + PORT_PIN0CTRL + pin) = flags >> 8;
-		}
-	}
-	/* Select direction and initial pin state */
-	if (flags & IOPORT_DIR_OUTPUT) {
- 23e:	40 ff       	sbrs	r20, 0
- 240:	0a c0       	rjmp	.+20     	; 0x256 <ioport_configure_port_pin+0x44>
-		if (flags & IOPORT_INIT_HIGH) {
- 242:	41 ff       	sbrs	r20, 1
- 244:	03 c0       	rjmp	.+6      	; 0x24c <ioport_configure_port_pin+0x3a>
-			*((uint8_t *)port + PORT_OUTSET) = pin_mask;
- 246:	fc 01       	movw	r30, r24
- 248:	65 83       	std	Z+5, r22	; 0x05
- 24a:	02 c0       	rjmp	.+4      	; 0x250 <ioport_configure_port_pin+0x3e>
-		} else {
-			*((uint8_t *)port + PORT_OUTCLR) = pin_mask;
- 24c:	fc 01       	movw	r30, r24
- 24e:	66 83       	std	Z+6, r22	; 0x06
-		}
+000002de <board_init>:
+ 2de:	43 e0       	ldi	r20, 0x03	; 3
+ 2e0:	50 e0       	ldi	r21, 0x00	; 0
+ 2e2:	61 e0       	ldi	r22, 0x01	; 1
+ 2e4:	80 ee       	ldi	r24, 0xE0	; 224
+ 2e6:	97 e0       	ldi	r25, 0x07	; 7
+ 2e8:	d3 df       	rcall	.-90     	; 0x290 <ioport_configure_port_pin>
+ 2ea:	43 e0       	ldi	r20, 0x03	; 3
+ 2ec:	50 e0       	ldi	r21, 0x00	; 0
+ 2ee:	62 e0       	ldi	r22, 0x02	; 2
+ 2f0:	80 ee       	ldi	r24, 0xE0	; 224
+ 2f2:	97 e0       	ldi	r25, 0x07	; 7
+ 2f4:	cd df       	rcall	.-102    	; 0x290 <ioport_configure_port_pin>
+ 2f6:	43 e0       	ldi	r20, 0x03	; 3
+ 2f8:	50 e0       	ldi	r21, 0x00	; 0
+ 2fa:	60 e1       	ldi	r22, 0x10	; 16
+ 2fc:	80 e6       	ldi	r24, 0x60	; 96
+ 2fe:	96 e0       	ldi	r25, 0x06	; 6
+ 300:	c7 df       	rcall	.-114    	; 0x290 <ioport_configure_port_pin>
+ 302:	41 e0       	ldi	r20, 0x01	; 1
+ 304:	50 e4       	ldi	r21, 0x40	; 64
+ 306:	60 e2       	ldi	r22, 0x20	; 32
+ 308:	80 e6       	ldi	r24, 0x60	; 96
+ 30a:	96 e0       	ldi	r25, 0x06	; 6
+ 30c:	c1 df       	rcall	.-126    	; 0x290 <ioport_configure_port_pin>
+ 30e:	40 e0       	ldi	r20, 0x00	; 0
+ 310:	5b e1       	ldi	r21, 0x1B	; 27
+ 312:	60 e2       	ldi	r22, 0x20	; 32
+ 314:	80 e8       	ldi	r24, 0x80	; 128
+ 316:	96 e0       	ldi	r25, 0x06	; 6
+ 318:	bb df       	rcall	.-138    	; 0x290 <ioport_configure_port_pin>
+ 31a:	40 e0       	ldi	r20, 0x00	; 0
+ 31c:	5b e1       	ldi	r21, 0x1B	; 27
+ 31e:	62 e0       	ldi	r22, 0x02	; 2
+ 320:	80 ea       	ldi	r24, 0xA0	; 160
+ 322:	96 e0       	ldi	r25, 0x06	; 6
+ 324:	b5 df       	rcall	.-150    	; 0x290 <ioport_configure_port_pin>
+ 326:	40 e0       	ldi	r20, 0x00	; 0
+ 328:	5b e1       	ldi	r21, 0x1B	; 27
+ 32a:	64 e0       	ldi	r22, 0x04	; 4
+ 32c:	80 ea       	ldi	r24, 0xA0	; 160
+ 32e:	96 e0       	ldi	r25, 0x06	; 6
+ 330:	af df       	rcall	.-162    	; 0x290 <ioport_configure_port_pin>
+ 332:	43 e0       	ldi	r20, 0x03	; 3
+ 334:	50 e0       	ldi	r21, 0x00	; 0
+ 336:	62 e0       	ldi	r22, 0x02	; 2
+ 338:	80 e6       	ldi	r24, 0x60	; 96
+ 33a:	96 e0       	ldi	r25, 0x06	; 6
+ 33c:	a9 df       	rcall	.-174    	; 0x290 <ioport_configure_port_pin>
+ 33e:	43 e0       	ldi	r20, 0x03	; 3
+ 340:	50 e0       	ldi	r21, 0x00	; 0
+ 342:	68 e0       	ldi	r22, 0x08	; 8
+ 344:	80 e6       	ldi	r24, 0x60	; 96
+ 346:	96 e0       	ldi	r25, 0x06	; 6
+ 348:	a3 df       	rcall	.-186    	; 0x290 <ioport_configure_port_pin>
+ 34a:	43 e0       	ldi	r20, 0x03	; 3
+ 34c:	50 e0       	ldi	r21, 0x00	; 0
+ 34e:	68 e0       	ldi	r22, 0x08	; 8
+ 350:	80 ea       	ldi	r24, 0xA0	; 160
+ 352:	96 e0       	ldi	r25, 0x06	; 6
+ 354:	9d df       	rcall	.-198    	; 0x290 <ioport_configure_port_pin>
+ 356:	43 e0       	ldi	r20, 0x03	; 3
+ 358:	50 e0       	ldi	r21, 0x00	; 0
+ 35a:	61 e0       	ldi	r22, 0x01	; 1
+ 35c:	80 e6       	ldi	r24, 0x60	; 96
+ 35e:	96 e0       	ldi	r25, 0x06	; 6
+ 360:	97 df       	rcall	.-210    	; 0x290 <ioport_configure_port_pin>
+ 362:	43 e0       	ldi	r20, 0x03	; 3
+ 364:	50 e0       	ldi	r21, 0x00	; 0
+ 366:	68 e0       	ldi	r22, 0x08	; 8
+ 368:	80 e0       	ldi	r24, 0x00	; 0
+ 36a:	96 e0       	ldi	r25, 0x06	; 6
+ 36c:	91 df       	rcall	.-222    	; 0x290 <ioport_configure_port_pin>
+ 36e:	41 e0       	ldi	r20, 0x01	; 1
+ 370:	50 e0       	ldi	r21, 0x00	; 0
+ 372:	60 e1       	ldi	r22, 0x10	; 16
+ 374:	80 e8       	ldi	r24, 0x80	; 128
+ 376:	96 e0       	ldi	r25, 0x06	; 6
+ 378:	8b df       	rcall	.-234    	; 0x290 <ioport_configure_port_pin>
+ 37a:	43 e0       	ldi	r20, 0x03	; 3
+ 37c:	50 e0       	ldi	r21, 0x00	; 0
+ 37e:	62 e0       	ldi	r22, 0x02	; 2
+ 380:	80 e6       	ldi	r24, 0x60	; 96
+ 382:	96 e0       	ldi	r25, 0x06	; 6
+ 384:	85 df       	rcall	.-246    	; 0x290 <ioport_configure_port_pin>
+ 386:	43 e0       	ldi	r20, 0x03	; 3
+ 388:	50 e0       	ldi	r21, 0x00	; 0
+ 38a:	68 e0       	ldi	r22, 0x08	; 8
+ 38c:	80 e6       	ldi	r24, 0x60	; 96
+ 38e:	96 e0       	ldi	r25, 0x06	; 6
+ 390:	7f df       	rcall	.-258    	; 0x290 <ioport_configure_port_pin>
+ 392:	40 e0       	ldi	r20, 0x00	; 0
+ 394:	50 e0       	ldi	r21, 0x00	; 0
+ 396:	64 e0       	ldi	r22, 0x04	; 4
+ 398:	80 e6       	ldi	r24, 0x60	; 96
+ 39a:	96 e0       	ldi	r25, 0x06	; 6
+ 39c:	79 df       	rcall	.-270    	; 0x290 <ioport_configure_port_pin>
+ 39e:	43 e0       	ldi	r20, 0x03	; 3
+ 3a0:	50 e0       	ldi	r21, 0x00	; 0
+ 3a2:	60 e1       	ldi	r22, 0x10	; 16
+ 3a4:	80 ea       	ldi	r24, 0xA0	; 160
+ 3a6:	96 e0       	ldi	r25, 0x06	; 6
+ 3a8:	73 df       	rcall	.-282    	; 0x290 <ioport_configure_port_pin>
+ 3aa:	40 e0       	ldi	r20, 0x00	; 0
+ 3ac:	50 e0       	ldi	r21, 0x00	; 0
+ 3ae:	61 e0       	ldi	r22, 0x01	; 1
+ 3b0:	80 e0       	ldi	r24, 0x00	; 0
+ 3b2:	96 e0       	ldi	r25, 0x06	; 6
+ 3b4:	6d df       	rcall	.-294    	; 0x290 <ioport_configure_port_pin>
+ 3b6:	40 e0       	ldi	r20, 0x00	; 0
+ 3b8:	50 e0       	ldi	r21, 0x00	; 0
+ 3ba:	64 e0       	ldi	r22, 0x04	; 4
+ 3bc:	80 e0       	ldi	r24, 0x00	; 0
+ 3be:	96 e0       	ldi	r25, 0x06	; 6
+ 3c0:	67 df       	rcall	.-306    	; 0x290 <ioport_configure_port_pin>
+ 3c2:	40 e0       	ldi	r20, 0x00	; 0
+ 3c4:	50 e0       	ldi	r21, 0x00	; 0
+ 3c6:	62 e0       	ldi	r22, 0x02	; 2
+ 3c8:	80 e2       	ldi	r24, 0x20	; 32
+ 3ca:	96 e0       	ldi	r25, 0x06	; 6
+ 3cc:	61 df       	rcall	.-318    	; 0x290 <ioport_configure_port_pin>
+ 3ce:	43 e0       	ldi	r20, 0x03	; 3
+ 3d0:	50 e0       	ldi	r21, 0x00	; 0
+ 3d2:	68 e0       	ldi	r22, 0x08	; 8
+ 3d4:	80 e4       	ldi	r24, 0x40	; 64
+ 3d6:	96 e0       	ldi	r25, 0x06	; 6
+ 3d8:	5b df       	rcall	.-330    	; 0x290 <ioport_configure_port_pin>
+ 3da:	40 e0       	ldi	r20, 0x00	; 0
+ 3dc:	50 e0       	ldi	r21, 0x00	; 0
+ 3de:	64 e0       	ldi	r22, 0x04	; 4
+ 3e0:	80 e4       	ldi	r24, 0x40	; 64
+ 3e2:	96 e0       	ldi	r25, 0x06	; 6
+ 3e4:	55 df       	rcall	.-342    	; 0x290 <ioport_configure_port_pin>
+ 3e6:	43 e0       	ldi	r20, 0x03	; 3
+ 3e8:	50 e0       	ldi	r21, 0x00	; 0
+ 3ea:	68 e0       	ldi	r22, 0x08	; 8
+ 3ec:	80 e6       	ldi	r24, 0x60	; 96
+ 3ee:	96 e0       	ldi	r25, 0x06	; 6
+ 3f0:	4f df       	rcall	.-354    	; 0x290 <ioport_configure_port_pin>
+ 3f2:	40 e0       	ldi	r20, 0x00	; 0
+ 3f4:	50 e0       	ldi	r21, 0x00	; 0
+ 3f6:	64 e0       	ldi	r22, 0x04	; 4
+ 3f8:	80 e6       	ldi	r24, 0x60	; 96
+ 3fa:	96 e0       	ldi	r25, 0x06	; 6
+ 3fc:	49 df       	rcall	.-366    	; 0x290 <ioport_configure_port_pin>
+ 3fe:	43 e0       	ldi	r20, 0x03	; 3
+ 400:	50 e0       	ldi	r21, 0x00	; 0
+ 402:	68 e0       	ldi	r22, 0x08	; 8
+ 404:	80 e8       	ldi	r24, 0x80	; 128
+ 406:	96 e0       	ldi	r25, 0x06	; 6
+ 408:	43 df       	rcall	.-378    	; 0x290 <ioport_configure_port_pin>
+ 40a:	40 e0       	ldi	r20, 0x00	; 0
+ 40c:	50 e0       	ldi	r21, 0x00	; 0
+ 40e:	64 e0       	ldi	r22, 0x04	; 4
+ 410:	80 e8       	ldi	r24, 0x80	; 128
+ 412:	96 e0       	ldi	r25, 0x06	; 6
+ 414:	3d cf       	rjmp	.-390    	; 0x290 <ioport_configure_port_pin>
+ 416:	08 95       	ret
 
-		*((uint8_t *)port + PORT_DIRSET) = pin_mask;
- 250:	fc 01       	movw	r30, r24
- 252:	61 83       	std	Z+1, r22	; 0x01
- 254:	02 c0       	rjmp	.+4      	; 0x25a <ioport_configure_port_pin+0x48>
-	} else {
-		*((uint8_t *)port + PORT_DIRCLR) = pin_mask;
- 256:	fc 01       	movw	r30, r24
- 258:	62 83       	std	Z+2, r22	; 0x02
-	}
-}
- 25a:	df 91       	pop	r29
- 25c:	cf 91       	pop	r28
- 25e:	08 95       	ret
-
-00000260 <board_init>:
- * \param flags Bitmask of flags specifying additional configuration
- * parameters.
- */
-static inline void ioport_configure_pin(port_pin_t pin, port_pin_flags_t flags)
-{
-	ioport_configure_port_pin(arch_ioport_pin_to_base(pin),
- 260:	43 e0       	ldi	r20, 0x03	; 3
- 262:	50 e0       	ldi	r21, 0x00	; 0
- 264:	61 e0       	ldi	r22, 0x01	; 1
- 266:	80 ee       	ldi	r24, 0xE0	; 224
- 268:	97 e0       	ldi	r25, 0x07	; 7
- 26a:	d3 df       	rcall	.-90     	; 0x212 <ioport_configure_port_pin>
- 26c:	43 e0       	ldi	r20, 0x03	; 3
- 26e:	50 e0       	ldi	r21, 0x00	; 0
- 270:	62 e0       	ldi	r22, 0x02	; 2
- 272:	80 ee       	ldi	r24, 0xE0	; 224
- 274:	97 e0       	ldi	r25, 0x07	; 7
- 276:	cd df       	rcall	.-102    	; 0x212 <ioport_configure_port_pin>
- 278:	43 e0       	ldi	r20, 0x03	; 3
- 27a:	50 e0       	ldi	r21, 0x00	; 0
- 27c:	60 e1       	ldi	r22, 0x10	; 16
- 27e:	80 e6       	ldi	r24, 0x60	; 96
- 280:	96 e0       	ldi	r25, 0x06	; 6
- 282:	c7 df       	rcall	.-114    	; 0x212 <ioport_configure_port_pin>
- 284:	41 e0       	ldi	r20, 0x01	; 1
- 286:	50 e4       	ldi	r21, 0x40	; 64
- 288:	60 e2       	ldi	r22, 0x20	; 32
- 28a:	80 e6       	ldi	r24, 0x60	; 96
- 28c:	96 e0       	ldi	r25, 0x06	; 6
- 28e:	c1 df       	rcall	.-126    	; 0x212 <ioport_configure_port_pin>
- 290:	40 e0       	ldi	r20, 0x00	; 0
- 292:	5b e1       	ldi	r21, 0x1B	; 27
- 294:	60 e2       	ldi	r22, 0x20	; 32
- 296:	80 e8       	ldi	r24, 0x80	; 128
- 298:	96 e0       	ldi	r25, 0x06	; 6
- 29a:	bb df       	rcall	.-138    	; 0x212 <ioport_configure_port_pin>
- 29c:	40 e0       	ldi	r20, 0x00	; 0
- 29e:	5b e1       	ldi	r21, 0x1B	; 27
- 2a0:	62 e0       	ldi	r22, 0x02	; 2
- 2a2:	80 ea       	ldi	r24, 0xA0	; 160
- 2a4:	96 e0       	ldi	r25, 0x06	; 6
- 2a6:	b5 df       	rcall	.-150    	; 0x212 <ioport_configure_port_pin>
- 2a8:	40 e0       	ldi	r20, 0x00	; 0
- 2aa:	5b e1       	ldi	r21, 0x1B	; 27
- 2ac:	64 e0       	ldi	r22, 0x04	; 4
- 2ae:	80 ea       	ldi	r24, 0xA0	; 160
- 2b0:	96 e0       	ldi	r25, 0x06	; 6
- 2b2:	af df       	rcall	.-162    	; 0x212 <ioport_configure_port_pin>
- 2b4:	43 e0       	ldi	r20, 0x03	; 3
- 2b6:	50 e0       	ldi	r21, 0x00	; 0
- 2b8:	62 e0       	ldi	r22, 0x02	; 2
- 2ba:	80 e6       	ldi	r24, 0x60	; 96
- 2bc:	96 e0       	ldi	r25, 0x06	; 6
- 2be:	a9 df       	rcall	.-174    	; 0x212 <ioport_configure_port_pin>
- 2c0:	43 e0       	ldi	r20, 0x03	; 3
- 2c2:	50 e0       	ldi	r21, 0x00	; 0
- 2c4:	68 e0       	ldi	r22, 0x08	; 8
- 2c6:	80 e6       	ldi	r24, 0x60	; 96
- 2c8:	96 e0       	ldi	r25, 0x06	; 6
- 2ca:	a3 df       	rcall	.-186    	; 0x212 <ioport_configure_port_pin>
- 2cc:	43 e0       	ldi	r20, 0x03	; 3
- 2ce:	50 e0       	ldi	r21, 0x00	; 0
- 2d0:	68 e0       	ldi	r22, 0x08	; 8
- 2d2:	80 ea       	ldi	r24, 0xA0	; 160
- 2d4:	96 e0       	ldi	r25, 0x06	; 6
- 2d6:	9d df       	rcall	.-198    	; 0x212 <ioport_configure_port_pin>
- 2d8:	43 e0       	ldi	r20, 0x03	; 3
- 2da:	50 e0       	ldi	r21, 0x00	; 0
- 2dc:	61 e0       	ldi	r22, 0x01	; 1
- 2de:	80 e6       	ldi	r24, 0x60	; 96
- 2e0:	96 e0       	ldi	r25, 0x06	; 6
- 2e2:	97 df       	rcall	.-210    	; 0x212 <ioport_configure_port_pin>
- 2e4:	43 e0       	ldi	r20, 0x03	; 3
- 2e6:	50 e0       	ldi	r21, 0x00	; 0
- 2e8:	68 e0       	ldi	r22, 0x08	; 8
- 2ea:	80 e0       	ldi	r24, 0x00	; 0
- 2ec:	96 e0       	ldi	r25, 0x06	; 6
- 2ee:	91 df       	rcall	.-222    	; 0x212 <ioport_configure_port_pin>
- 2f0:	41 e0       	ldi	r20, 0x01	; 1
- 2f2:	50 e0       	ldi	r21, 0x00	; 0
- 2f4:	60 e1       	ldi	r22, 0x10	; 16
- 2f6:	80 e8       	ldi	r24, 0x80	; 128
- 2f8:	96 e0       	ldi	r25, 0x06	; 6
- 2fa:	8b df       	rcall	.-234    	; 0x212 <ioport_configure_port_pin>
- 2fc:	43 e0       	ldi	r20, 0x03	; 3
- 2fe:	50 e0       	ldi	r21, 0x00	; 0
- 300:	62 e0       	ldi	r22, 0x02	; 2
- 302:	80 e6       	ldi	r24, 0x60	; 96
- 304:	96 e0       	ldi	r25, 0x06	; 6
- 306:	85 df       	rcall	.-246    	; 0x212 <ioport_configure_port_pin>
- 308:	43 e0       	ldi	r20, 0x03	; 3
- 30a:	50 e0       	ldi	r21, 0x00	; 0
- 30c:	68 e0       	ldi	r22, 0x08	; 8
- 30e:	80 e6       	ldi	r24, 0x60	; 96
- 310:	96 e0       	ldi	r25, 0x06	; 6
- 312:	7f df       	rcall	.-258    	; 0x212 <ioport_configure_port_pin>
- 314:	40 e0       	ldi	r20, 0x00	; 0
- 316:	50 e0       	ldi	r21, 0x00	; 0
- 318:	64 e0       	ldi	r22, 0x04	; 4
- 31a:	80 e6       	ldi	r24, 0x60	; 96
- 31c:	96 e0       	ldi	r25, 0x06	; 6
- 31e:	79 df       	rcall	.-270    	; 0x212 <ioport_configure_port_pin>
- 320:	43 e0       	ldi	r20, 0x03	; 3
- 322:	50 e0       	ldi	r21, 0x00	; 0
- 324:	60 e1       	ldi	r22, 0x10	; 16
- 326:	80 ea       	ldi	r24, 0xA0	; 160
- 328:	96 e0       	ldi	r25, 0x06	; 6
- 32a:	73 df       	rcall	.-282    	; 0x212 <ioport_configure_port_pin>
- 32c:	40 e0       	ldi	r20, 0x00	; 0
- 32e:	50 e0       	ldi	r21, 0x00	; 0
- 330:	61 e0       	ldi	r22, 0x01	; 1
- 332:	80 e0       	ldi	r24, 0x00	; 0
- 334:	96 e0       	ldi	r25, 0x06	; 6
- 336:	6d df       	rcall	.-294    	; 0x212 <ioport_configure_port_pin>
- 338:	40 e0       	ldi	r20, 0x00	; 0
- 33a:	50 e0       	ldi	r21, 0x00	; 0
- 33c:	64 e0       	ldi	r22, 0x04	; 4
- 33e:	80 e0       	ldi	r24, 0x00	; 0
- 340:	96 e0       	ldi	r25, 0x06	; 6
- 342:	67 df       	rcall	.-306    	; 0x212 <ioport_configure_port_pin>
- 344:	40 e0       	ldi	r20, 0x00	; 0
- 346:	50 e0       	ldi	r21, 0x00	; 0
- 348:	62 e0       	ldi	r22, 0x02	; 2
- 34a:	80 e2       	ldi	r24, 0x20	; 32
- 34c:	96 e0       	ldi	r25, 0x06	; 6
- 34e:	61 df       	rcall	.-318    	; 0x212 <ioport_configure_port_pin>
- 350:	43 e0       	ldi	r20, 0x03	; 3
- 352:	50 e0       	ldi	r21, 0x00	; 0
- 354:	68 e0       	ldi	r22, 0x08	; 8
- 356:	80 e4       	ldi	r24, 0x40	; 64
- 358:	96 e0       	ldi	r25, 0x06	; 6
- 35a:	5b df       	rcall	.-330    	; 0x212 <ioport_configure_port_pin>
- 35c:	40 e0       	ldi	r20, 0x00	; 0
- 35e:	50 e0       	ldi	r21, 0x00	; 0
- 360:	64 e0       	ldi	r22, 0x04	; 4
- 362:	80 e4       	ldi	r24, 0x40	; 64
- 364:	96 e0       	ldi	r25, 0x06	; 6
- 366:	55 df       	rcall	.-342    	; 0x212 <ioport_configure_port_pin>
- 368:	43 e0       	ldi	r20, 0x03	; 3
- 36a:	50 e0       	ldi	r21, 0x00	; 0
- 36c:	68 e0       	ldi	r22, 0x08	; 8
- 36e:	80 e6       	ldi	r24, 0x60	; 96
- 370:	96 e0       	ldi	r25, 0x06	; 6
- 372:	4f df       	rcall	.-354    	; 0x212 <ioport_configure_port_pin>
- 374:	40 e0       	ldi	r20, 0x00	; 0
- 376:	50 e0       	ldi	r21, 0x00	; 0
- 378:	64 e0       	ldi	r22, 0x04	; 4
- 37a:	80 e6       	ldi	r24, 0x60	; 96
- 37c:	96 e0       	ldi	r25, 0x06	; 6
- 37e:	49 df       	rcall	.-366    	; 0x212 <ioport_configure_port_pin>
- 380:	43 e0       	ldi	r20, 0x03	; 3
- 382:	50 e0       	ldi	r21, 0x00	; 0
- 384:	68 e0       	ldi	r22, 0x08	; 8
- 386:	80 e8       	ldi	r24, 0x80	; 128
- 388:	96 e0       	ldi	r25, 0x06	; 6
- 38a:	43 df       	rcall	.-378    	; 0x212 <ioport_configure_port_pin>
- 38c:	40 e0       	ldi	r20, 0x00	; 0
- 38e:	50 e0       	ldi	r21, 0x00	; 0
- 390:	64 e0       	ldi	r22, 0x04	; 4
- 392:	80 e8       	ldi	r24, 0x80	; 128
- 394:	96 e0       	ldi	r25, 0x06	; 6
- 396:	3d cf       	rjmp	.-390    	; 0x212 <ioport_configure_port_pin>
- 398:	08 95       	ret
-
-0000039a <main>:
-#include <st7565r.h>
-#include <conf_usart_example.h>
-#include "led.h"
-
+00000418 <main>:
 int main (void)
 {
- 39a:	62 df       	rcall	.-316    	; 0x260 <board_init>
- 39c:	80 e0       	ldi	r24, 0x00	; 0
- 39e:	90 e0       	ldi	r25, 0x00	; 0
- 3a0:	08 95       	ret
+	/* Insert system clock initialization code here (sysclk_init()). */
 
-000003a2 <_exit>:
- 3a2:	f8 94       	cli
+	board_init();
+	sysclk_init();
+ 418:	62 df       	rcall	.-316    	; 0x2de <board_init>
+ 41a:	fb de       	rcall	.-522    	; 0x212 <sysclk_init>
+		bool level)
+{
+	PORT_t *base = arch_ioport_pin_to_base(pin);
 
-000003a4 <__stop_program>:
- 3a4:	ff cf       	rjmp	.-2      	; 0x3a4 <__stop_program>
+	if (level) {
+		base->OUTSET = arch_ioport_pin_to_mask(pin);
+ 41c:	80 e1       	ldi	r24, 0x10	; 16
+ 41e:	80 93 85 06 	sts	0x0685, r24	; 0x800685 <__TEXT_REGION_LENGTH__+0x700685>
+
+	gpio_set_pin_high(NHD_C12832A1Z_BACKLIGHT);
+
+	/* Insert application code here, after the board has been initialized. */
+ 422:	80 e0       	ldi	r24, 0x00	; 0
+ 424:	90 e0       	ldi	r25, 0x00	; 0
+ 426:	08 95       	ret
+
+00000428 <_exit>:
+ 428:	f8 94       	cli
+
+0000042a <__stop_program>:
+ 42a:	ff cf       	rjmp	.-2      	; 0x42a <__stop_program>
