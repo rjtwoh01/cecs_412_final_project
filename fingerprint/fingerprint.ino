@@ -130,3 +130,7 @@ int getFingerprintIDez() {
   Serial.print(" with confidence of "); Serial.println(finger.confidence);
   return finger.fingerID; 
 }
+
+void sendSignal() {
+  //Send a signal saying who the match is
+}
