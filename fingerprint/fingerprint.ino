@@ -25,9 +25,11 @@ void sendSignal(int fingerID);
 // pin #2 is IN from sensor (GREEN wire)
 // pin #3 is OUT from arduino  (WHITE wire)
 SoftwareSerial mySerial(2, 3);
+//SoftwareSerial sendSerial(1);
 
 
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
+//Adafruit_Fingerprint serialFinger =  Adafruit_Fingerprint(&sendSerial);
 
 void setup()  
 {
@@ -138,7 +140,9 @@ void sendSignal(int fingerID) {
   //Send a signal saying who the match is
 
   //One or the other I think
-  //Serial.send(fingerID);
-  Wire.write(fingerID);
-  Serial.print("Sent signal\n");
+  //Serial.write(fingerID);
+  //sendSerial.write(fingerID);
+  //Serial.write("H");
+  //Wire.write(fingerID);
+  //Serial.print("Sent signal\n");
 }
