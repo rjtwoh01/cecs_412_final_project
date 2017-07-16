@@ -17,8 +17,10 @@
 
 #include <Adafruit_Fingerprint.h>
 #include <SoftwareSerial.h>
+#include <Wire.h>
 
 int getFingerprintIDez();
+void sendSignal(int fingerID);
 
 // pin #2 is IN from sensor (GREEN wire)
 // pin #3 is OUT from arduino  (WHITE wire)
@@ -128,9 +130,15 @@ int getFingerprintIDez() {
   // found a match!
   Serial.print("Found ID #"); Serial.print(finger.fingerID); 
   Serial.print(" with confidence of "); Serial.println(finger.confidence);
+  sendSignal(finger.fingerID);
   return finger.fingerID; 
 }
 
-void sendSignal() {
+void sendSignal(int fingerID) {
   //Send a signal saying who the match is
+
+  //One or the other I think
+  //Serial.send(fingerID);
+  Wire.write(fingerID);
+  Serial.print("Sent signal\n");
 }
