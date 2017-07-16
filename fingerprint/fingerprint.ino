@@ -141,6 +141,7 @@ void sendSignal(int fingerID) {
 
   //One or the other I think
   //Serial.write(fingerID);
+  Serial.print(fingerID);
   //sendSerial.write(fingerID);
   //Serial.write("H");
   //Wire.write(fingerID);
