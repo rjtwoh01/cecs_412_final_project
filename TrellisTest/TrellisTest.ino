@@ -120,7 +120,7 @@ void loop() {
       for (uint8_t i=0; i<numKeys; i++) {
         // if it was pressed...
 	if (trellis.justPressed(i)) {
-	  Serial.print("v"); Serial.println(i);
+	  /*Serial.print("v");*/ Serial.write(i);
 	  // Alternate the LED
 	  if (trellis.isLED(i))
 	    trellis.clrLED(i);
