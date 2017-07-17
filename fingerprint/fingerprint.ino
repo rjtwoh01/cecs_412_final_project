@@ -38,6 +38,8 @@ void setup()
 
   // set the data rate for the sensor serial port
   finger.begin(57600);
+
+   pinMode(1,OUTPUT); //Set PIN 1 to output
   
   if (finger.verifyPassword()) {
     Serial.println("Found fingerprint sensor!");
@@ -140,8 +142,8 @@ void sendSignal(int fingerID) {
   //Send a signal saying who the match is
 
   //One or the other I think
-  //Serial.write(fingerID);
-  Serial.print(fingerID);
+  Serial.write(fingerID);
+  //Serial.println(fingerID);
   //sendSerial.write(fingerID);
   //Serial.write("H");
   //Wire.write(fingerID);
