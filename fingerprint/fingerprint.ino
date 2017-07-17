@@ -47,7 +47,7 @@ Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 void setup()  
 {
   Serial.begin(9600);
-  //Serial.println("fingertest");
+  Serial.println("fingertest");
 
   // set the data rate for the sensor serial port
   finger.begin(57600);
@@ -191,7 +191,7 @@ int getFingerprintIDez() {
   if (p != FINGERPRINT_OK)  return -1;
   
   // found a match!
-  /*Serial.print("");*/ Serial.print(finger.fingerID); 
+  /*Serial.print("");*/ Serial.write(finger.fingerID); 
   //Serial.print(" with confidence of "); Serial.println(finger.confidence);
   sendSignal(finger.fingerID);
   I2CSignal(finger.fingerID);
