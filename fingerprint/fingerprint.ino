@@ -18,9 +18,22 @@
 #include <Adafruit_Fingerprint.h>
 #include <SoftwareSerial.h>
 #include <Wire.h>
+#include <ctype.h>
+
+#define bit9600Delay 84  
+#define halfBit9600Delay 42
+#define bit4800Delay 188 
+#define halfBit4800Delay 94 
+
+byte rx = 6;
+byte tx = 7;
+byte SWval;
 
 int getFingerprintIDez();
 void sendSignal(int fingerID);
+void I2CSignal(int fingerID);
+void SWprint(int data);
+
 
 // pin #2 is IN from sensor (GREEN wire)
 // pin #3 is OUT from arduino  (WHITE wire)
@@ -39,7 +52,7 @@ void setup()
   // set the data rate for the sensor serial port
   finger.begin(57600);
 
-   pinMode(1,OUTPUT); //Set PIN 1 to output
+   //pinMode(1,OUTPUT); //Set PIN 1 to output
   
   if (finger.verifyPassword()) {
     Serial.println("Found fingerprint sensor!");
@@ -48,6 +61,52 @@ void setup()
     while (1);
   }
   Serial.println("Waiting for valid finger...");
+
+  pinMode(rx,INPUT);
+  pinMode(tx,OUTPUT);
+  digitalWrite(tx,HIGH);
+  digitalWrite(13,HIGH); //turn on debugging LED
+  SWprint('h');  //debugging hello
+  SWprint('i');
+  SWprint(10); //carriage return
+}
+
+void SWprint(int data)
+{
+  byte mask;
+  //startbit
+  digitalWrite(tx,LOW);
+  delayMicroseconds(bit9600Delay);
+  for (mask = 0x01; mask>0; mask <<= 1) {
+    if (data & mask){ // choose bit
+     digitalWrite(tx,HIGH); // send 1
+    }
+    else{
+     digitalWrite(tx,LOW); // send 0
+    }
+    delayMicroseconds(bit9600Delay);
+  }
+  //stop bit
+  digitalWrite(tx, HIGH);
+  delayMicroseconds(bit9600Delay);
+}
+
+int SWread()
+{
+  byte val = 0;
+  while (digitalRead(rx));
+  //wait for start bit
+  if (digitalRead(rx) == LOW) {
+    delayMicroseconds(halfBit9600Delay);
+    for (int offset = 0; offset < 8; offset++) {
+     delayMicroseconds(bit9600Delay);
+     val |= digitalRead(rx) << offset;
+    }
+    //wait for stop bit + extra
+    delayMicroseconds(bit9600Delay); 
+    delayMicroseconds(bit9600Delay);
+    return val;
+  }
 }
 
 void loop()                     // run over and over again
@@ -135,6 +194,7 @@ int getFingerprintIDez() {
   Serial.print("Found ID #"); Serial.print(finger.fingerID); 
   Serial.print(" with confidence of "); Serial.println(finger.confidence);
   sendSignal(finger.fingerID);
+  I2CSignal(finger.fingerID);
   return finger.fingerID; 
 }
 
@@ -148,4 +208,9 @@ void sendSignal(int fingerID) {
   //Serial.write("H");
   //Wire.write(fingerID);
   //Serial.print("Sent signal\n");
+}
+
+void I2CSignal(int fingerID) {
+  SWprint(fingerID);
+  //Wire.beginTransmission(
 }
