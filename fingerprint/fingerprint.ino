@@ -46,9 +46,14 @@ int getKeyPadButton();
 
 int runKeypad();
 
-int correctCombination[4] = { 0, 0, 0, 0 };
+int keypadLoop();
+
+int correctCombination[4] = { 4, 1, 2, 1 };
 int userCombination[4] = { 0, 0, 0, 0 };
 int keypadLoop();
+int index = 0;
+int globalFingerResult = 0;
+int success = 0;
 
 // pin #2 is IN from sensor (GREEN wire)
 // pin #3 is OUT from arduino  (WHITE wire)
@@ -66,6 +71,7 @@ void setup()
 
   // set the data rate for the sensor serial port
   finger.begin(57600);
+  trellis.begin(0x70);  // only one
 
   // INT pin requires a pullup
   pinMode(INTPIN, INPUT);
@@ -74,12 +80,39 @@ void setup()
 
 void loop() // run over and over again
 {
-  getFingerprintIDez();
+  int fingerResult = getFingerprintIDez();
+  if (fingerResult > 0) { globalFingerResult = fingerResult; }
+  int result = keypadLoop();
+  if (result > 0) {
+    userCombination[index] = result;
+    //Serial.println(userCombination[index]);
+    index++;
+  }
+  if (index >= 3) { 
+    index = 0;
+    for (int i = 0; i <= 3; i++) {
+    if (userCombination[i] != correctCombination[i]) {
+        success = 1;
+      }
+      else {
+        success = 0;
+        for (int j = 0; j <= 3; j++) {
+          userCombination[i] = 0;
+        }
+      }
+    }
+   }
+  if (success == 1 && globalFingerResult > 0)
+  {
+    Serial.write(finger.fingerID);
+    success = 0;
+    globalFingerResult = 0;
+  }
   delay(50);            //don't ned to run this at full speed.
 }
 
 int keypadLoop() {
-  delay(30); // 30ms delay is required, dont remove me!
+delay(30); // 30ms delay is required, dont remove me!
   
   if (MODE == MOMENTARY) {
     // If a button was just pressed or released...
@@ -89,40 +122,41 @@ int keypadLoop() {
   // if it was pressed, turn it on
   if (trellis.justPressed(i)) {
     //Serial.print("v"); Serial.println(i);
-    trellis.setLED(i);
     return i;
+    trellis.setLED(i);
   } 
   // if it was released, turn it off
   if (trellis.justReleased(i)) {
     //Serial.print("^"); Serial.println(i);
-    trellis.clrLED(i);
     return i;
-     }
+    trellis.clrLED(i);
+  }
+      }
       // tell the trellis to set the LEDs we requested
-      //trellis.writeDisplay();
+      trellis.writeDisplay();
     }
-   }
-   if (MODE == LATCHING) {
+  }
+
+  if (MODE == LATCHING) {
     // If a button was just pressed or released...
     if (trellis.readSwitches()) {
       // go through every button
       for (uint8_t i=0; i<numKeys; i++) {
         // if it was pressed...
- if (trellis.justPressed(i)) {
-    /*Serial.print("v");*/ //Serial.write(i);
+  if (trellis.justPressed(i)) {
+    //Serial.print("v"); Serial.println(i);
+    return i;
     // Alternate the LED
     if (trellis.isLED(i))
       trellis.clrLED(i);
     else
       trellis.setLED(i);
-      return i;
         } 
       }
       // tell the trellis to set the LEDs we requested
-      //trellis.writeDisplay();
+      trellis.writeDisplay();
     }
   }
-}
   return 0;
 }
 
@@ -203,15 +237,7 @@ int getFingerprintIDez() {
   
   // found a match!
   /*Serial.print("");*/ //Serial.write(finger.fingerID); 
-  //Serial.print(" with confidence of "); Serial.println(finger.confidence);
-  //sendSignal(finger.fingerID);
-  //I2CSignal(finger.fingerID);
-  int result = runKeypad();
-  if (result == 1 && finger.fingerID != -1)
-  {
-    Serial.write(finger.fingerID);
-  }
-  
+   
   return finger.fingerID; 
 }
 
@@ -222,6 +248,7 @@ int runKeypad() {
   while (index < numOfKeysRequired) {
     int key = keypadLoop();
     userCombination[index] = key;
+    //Serial.println(userCombination[index]);
     index++;
   }
 
