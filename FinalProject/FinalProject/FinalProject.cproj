@@ -35,6 +35,7 @@
     <option id="common.services.delay" value="Add" config="" content-id="Atmel.ASF" />
     <option id="common.services.basic.gpio" value="Add" config="" content-id="Atmel.ASF" />
     <option id="xmega.drivers.ioport" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="xmega.services.pwm" value="Add" config="" content-id="Atmel.ASF" />
     <option id="common.applications.user_application" value="Add" config="" content-id="Atmel.ASF" />
   </options>
   <configurations>
@@ -100,6 +101,15 @@
     <file path="src/ASF/xmega/drivers/usart/usart.c" framework="" version="3.34.1" source="xmega\drivers\usart\usart.c" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/xmega/drivers/usart/usart.h" framework="" version="3.34.1" source="xmega\drivers\usart\usart.h" changed="False" content-id="Atmel.ASF" />
     <file path="src/Config/conf_sysfont.h" framework="" version="3.34.1" source="common\services\gfx_mono\module_config\conf_sysfont.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/xmega/drivers/sleep/sleep.h" framework="" version="3.34.1" source="xmega\drivers\sleep\sleep.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/xmega/drivers/tc/tc.c" framework="" version="3.34.1" source="xmega\drivers\tc\tc.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/xmega/drivers/tc/tc.h" framework="" version="3.34.1" source="xmega\drivers\tc\tc.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/xmega/services/pwm/pwm.c" framework="" version="3.34.1" source="xmega\services\pwm\pwm.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/xmega/services/pwm/pwm.h" framework="" version="3.34.1" source="xmega\services\pwm\pwm.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/sleepmgr/xmega/sleepmgr.c" framework="" version="3.34.1" source="common\services\sleepmgr\xmega\sleepmgr.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/sleepmgr/sleepmgr.h" framework="" version="3.34.1" source="common\services\sleepmgr\sleepmgr.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/sleepmgr/xmega/sleepmgr.h" framework="" version="3.34.1" source="common\services\sleepmgr\xmega\sleepmgr.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/Config/conf_sleepmgr.h" framework="" version="3.34.1" source="common\services\sleepmgr\xmega\module_config\conf_sleepmgr.h" changed="False" content-id="Atmel.ASF" />
   </files>
   <documentation help="http://asf.atmel.com/docs/3.34.1/common.applications.user_application.xmega_a3bu_xplained/html/index.html" />
   <offline-documentation help="" />
@@ -167,6 +177,10 @@
       <Value>../src/ASF/common/services/spi/xmega_spi</Value>
       <Value>../src/ASF/common/services/spi</Value>
       <Value>../src/ASF/xmega/drivers/usart</Value>
+      <Value>../src/ASF/xmega/drivers/sleep</Value>
+      <Value>../src/ASF/xmega/drivers/tc</Value>
+      <Value>../src/ASF/xmega/services/pwm</Value>
+      <Value>../src/ASF/common/services/sleepmgr</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
@@ -205,6 +219,10 @@
       <Value>../src/ASF/common/services/spi/xmega_spi</Value>
       <Value>../src/ASF/common/services/spi</Value>
       <Value>../src/ASF/xmega/drivers/usart</Value>
+      <Value>../src/ASF/xmega/drivers/sleep</Value>
+      <Value>../src/ASF/xmega/drivers/tc</Value>
+      <Value>../src/ASF/xmega/services/pwm</Value>
+      <Value>../src/ASF/common/services/sleepmgr</Value>
     </ListValues>
   </avrgcc.assembler.general.IncludePaths>
 </AvrGcc>
@@ -250,6 +268,10 @@
       <Value>../src/ASF/common/services/spi/xmega_spi</Value>
       <Value>../src/ASF/common/services/spi</Value>
       <Value>../src/ASF/xmega/drivers/usart</Value>
+      <Value>../src/ASF/xmega/drivers/sleep</Value>
+      <Value>../src/ASF/xmega/drivers/tc</Value>
+      <Value>../src/ASF/xmega/services/pwm</Value>
+      <Value>../src/ASF/common/services/sleepmgr</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
@@ -289,6 +311,10 @@
       <Value>../src/ASF/common/services/spi/xmega_spi</Value>
       <Value>../src/ASF/common/services/spi</Value>
       <Value>../src/ASF/xmega/drivers/usart</Value>
+      <Value>../src/ASF/xmega/drivers/sleep</Value>
+      <Value>../src/ASF/xmega/drivers/tc</Value>
+      <Value>../src/ASF/xmega/services/pwm</Value>
+      <Value>../src/ASF/common/services/sleepmgr</Value>
     </ListValues>
   </avrgcc.assembler.general.IncludePaths>
   <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
@@ -312,6 +338,8 @@
     <Folder Include="src\ASF\common\services\gpio\xmega_gpio\" />
     <Folder Include="src\ASF\common\services\ioport\" />
     <Folder Include="src\ASF\common\services\ioport\xmega\" />
+    <Folder Include="src\ASF\common\services\sleepmgr\" />
+    <Folder Include="src\ASF\common\services\sleepmgr\xmega\" />
     <Folder Include="src\ASF\common\services\spi\" />
     <Folder Include="src\ASF\common\services\spi\xmega_spi\" />
     <Folder Include="src\ASF\common\services\spi\xmega_usart_spi\" />
@@ -325,8 +353,12 @@
     <Folder Include="src\ASF\xmega\drivers\cpu\" />
     <Folder Include="src\ASF\xmega\drivers\nvm\" />
     <Folder Include="src\ASF\xmega\drivers\pmic\" />
+    <Folder Include="src\ASF\xmega\drivers\sleep\" />
     <Folder Include="src\ASF\xmega\drivers\spi\" />
+    <Folder Include="src\ASF\xmega\drivers\tc\" />
     <Folder Include="src\ASF\xmega\drivers\usart\" />
+    <Folder Include="src\ASF\xmega\services\" />
+    <Folder Include="src\ASF\xmega\services\pwm\" />
     <Folder Include="src\ASF\xmega\utils\" />
     <Folder Include="src\ASF\xmega\utils\assembler\" />
     <Folder Include="src\ASF\xmega\utils\bit_handling\" />
@@ -337,6 +369,24 @@
     <Compile Include="src\ASF\common\components\display\st7565r\st7565r.c">
       <SubType>compile</SubType>
     </Compile>
+    <None Include="src\ASF\xmega\drivers\sleep\sleep.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\sleepmgr\sleepmgr.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\common\services\sleepmgr\xmega\sleepmgr.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\common\services\sleepmgr\xmega\sleepmgr.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\xmega\drivers\tc\tc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\xmega\drivers\tc\tc.h">
+      <SubType>compile</SubType>
+    </None>
     <Compile Include="src\ASF\xmega\drivers\usart\usart.c">
       <SubType>compile</SubType>
     </Compile>
@@ -424,9 +474,18 @@
     <None Include="src\ASF\xmega\drivers\cpu\xmega_reset_cause.h">
       <SubType>compile</SubType>
     </None>
+    <Compile Include="src\ASF\xmega\services\pwm\pwm.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\xmega\services\pwm\pwm.h">
+      <SubType>compile</SubType>
+    </None>
     <Compile Include="src\config\conf_clock.h">
       <SubType>compile</SubType>
     </Compile>
+    <None Include="src\config\conf_sleepmgr.h">
+      <SubType>compile</SubType>
+    </None>
     <Compile Include="src\config\conf_st7565r.h">
       <SubType>compile</SubType>
     </Compile>

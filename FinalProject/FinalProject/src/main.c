@@ -2,6 +2,7 @@
 #include <sysclk.h>
 #include <st7565r.h>
 #include <conf_usart_example.h>
+#include <pwm.h>
 #include "led.h"
 
 int getCharacter(int input);
@@ -56,6 +57,9 @@ uint8_t column_address;
 //! store the LCD controller start draw line
 uint8_t start_line_address = 0;
 
+//pwm
+struct pwm_config mypwm[4];
+
 int main(void)
 {
 	board_init();
@@ -65,6 +69,9 @@ int main(void)
 
 	// initialize the interface (SPI), ST7565R LCD controller and LCD
 	st7565r_init();
+	
+	//pwm init
+	pwm_init(&mypwm[0], PWM_TCE0, PWM_CH_A, 50);
 
 	// set addresses at beginning of display
 	resetScreen();
@@ -93,6 +100,19 @@ int main(void)
 		int userInput = getCharacter(input);
 		if(input != 0){
 			displayCharacter(input);
+			pwm_start(&mypwm[0], 2);
+			delay_s(2);
+			
+			pwm_start(&mypwm[0], 0);
+			
+			//While read switch is open - do nothing
+			
+			delay_s(5);
+			pwm_start(&mypwm[0], 7.5);
+			
+			delay_s(2);
+			
+			pwm_start(&mypwm[0], 0);
 		}
 	}
 }

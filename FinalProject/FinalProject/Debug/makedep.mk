@@ -4,6 +4,10 @@
 
 src\ASF\common\components\display\st7565r\st7565r.c
 
+src\ASF\common\services\sleepmgr\xmega\sleepmgr.c
+
+src\ASF\xmega\drivers\tc\tc.c
+
 src\ASF\xmega\drivers\usart\usart.c
 
 src\ASF\common\services\spi\xmega_usart_spi\usart_spi.c
@@ -19,6 +23,8 @@ src\ASF\xmega\drivers\nvm\nvm.c
 src\ASF\xmega\drivers\nvm\nvm_asm.s
 
 src\ASF\xmega\drivers\cpu\ccp.s
+
+src\ASF\xmega\services\pwm\pwm.c
 
 src\ASF\common\services\ioport\xmega\ioport_compat.c
 
