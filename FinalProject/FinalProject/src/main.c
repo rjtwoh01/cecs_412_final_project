@@ -101,9 +101,9 @@ int main(void)
 		if(input != 0){
 			displayCharacter(input);
 			pwm_start(&mypwm[0], 2);
-			delay_s(2);
+			//delay_s(2);
 			
-			pwm_start(&mypwm[0], 0);
+			//pwm_start(&mypwm[0], 0);
 			
 			//While read switch is open - do nothing
 			

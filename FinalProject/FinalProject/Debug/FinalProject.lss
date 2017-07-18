@@ -3,33 +3,33 @@ FinalProject.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         0000280c  00000000  00000000  00000094  2**1
+  0 .text         000027fa  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         000001d8  00802000  0000280c  000028a0  2**0
+  1 .data         000001d8  00802000  000027fa  0000288e  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          0000006d  008021d8  008021d8  00002a78  2**0
+  2 .bss          0000006d  008021d8  008021d8  00002a66  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00002a78  2**0
+  3 .comment      00000030  00000000  00000000  00002a66  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000044  00000000  00000000  00002aa8  2**2
+  4 .note.gnu.avr.deviceinfo 00000044  00000000  00000000  00002a98  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000368  00000000  00000000  00002af0  2**3
+  5 .debug_aranges 00000368  00000000  00000000  00002ae0  2**3
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   0000ea6e  00000000  00000000  00002e58  2**0
+  6 .debug_info   0000ea2d  00000000  00000000  00002e48  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00004829  00000000  00000000  000118c6  2**0
+  7 .debug_abbrev 00004838  00000000  00000000  00011875  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000628b  00000000  00000000  000160ef  2**0
+  8 .debug_line   0000627f  00000000  00000000  000160ad  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000011ec  00000000  00000000  0001c37c  2**2
+  9 .debug_frame  000011ec  00000000  00000000  0001c32c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000300ea  00000000  00000000  0001d568  2**0
+ 10 .debug_str    000300ea  00000000  00000000  0001d518  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000556b  00000000  00000000  0004d652  2**0
+ 11 .debug_loc    0000556b  00000000  00000000  0004d602  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000410  00000000  00000000  00052bbd  2**0
+ 12 .debug_ranges 00000410  00000000  00000000  00052b6d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_macro  0000b42e  00000000  00000000  00052fcd  2**0
+ 13 .debug_macro  0000b42e  00000000  00000000  00052f7d  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -309,8 +309,8 @@ Disassembly of section .text:
      21a:	11 e2       	ldi	r17, 0x21	; 33
      21c:	a0 e0       	ldi	r26, 0x00	; 0
      21e:	b0 e2       	ldi	r27, 0x20	; 32
-     220:	ec e0       	ldi	r30, 0x0C	; 12
-     222:	f8 e2       	ldi	r31, 0x28	; 40
+     220:	ea ef       	ldi	r30, 0xFA	; 250
+     222:	f7 e2       	ldi	r31, 0x27	; 39
      224:	00 e0       	ldi	r16, 0x00	; 0
      226:	0b bf       	out	0x3b, r16	; 59
      228:	02 c0       	rjmp	.+4      	; 0x22e <__do_copy_data+0x14>
@@ -334,7 +334,7 @@ Disassembly of section .text:
      240:	b2 07       	cpc	r27, r18
      242:	e1 f7       	brne	.-8      	; 0x23c <.do_clear_bss_loop>
      244:	0e 94 6e 13 	call	0x26dc	; 0x26dc <main>
-     248:	0c 94 04 14 	jmp	0x2808	; 0x2808 <_exit>
+     248:	0c 94 fb 13 	jmp	0x27f6	; 0x27f6 <_exit>
 
 0000024c <__bad_interrupt>:
      24c:	d9 ce       	rjmp	.-590    	; 0x0 <__vectors>
@@ -3756,7 +3756,7 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
     146e:	b2 01       	movw	r22, r4
     1470:	a5 01       	movw	r20, r10
     1472:	94 01       	movw	r18, r8
-    1474:	0e 94 cb 13 	call	0x2796	; 0x2796 <__udivmodsi4>
+    1474:	0e 94 c2 13 	call	0x2784	; 0x2784 <__udivmodsi4>
 
 	for (exp = -7; exp < 7; exp++) {
 		if (ratio < limit) {
@@ -3869,7 +3869,7 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
     150e:	97 1d       	adc	r25, r7
     1510:	a5 01       	movw	r20, r10
     1512:	94 01       	movw	r18, r8
-    1514:	0e 94 cb 13 	call	0x2796	; 0x2796 <__udivmodsi4>
+    1514:	0e 94 c2 13 	call	0x2784	; 0x2784 <__udivmodsi4>
     1518:	37 c0       	rjmp	.+110    	; 0x1588 <usart_set_baudrate+0x1c6>
 		} else {
 			baud <<= exp + 3;
@@ -3897,7 +3897,7 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
     1542:	75 1d       	adc	r23, r5
     1544:	86 1d       	adc	r24, r6
     1546:	97 1d       	adc	r25, r7
-    1548:	0e 94 cb 13 	call	0x2796	; 0x2796 <__udivmodsi4>
+    1548:	0e 94 c2 13 	call	0x2784	; 0x2784 <__udivmodsi4>
     154c:	1d c0       	rjmp	.+58     	; 0x1588 <usart_set_baudrate+0x1c6>
 		}
 	} else {
@@ -3929,7 +3929,7 @@ bool usart_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
     1576:	75 1d       	adc	r23, r5
     1578:	86 1d       	adc	r24, r6
     157a:	97 1d       	adc	r25, r7
-    157c:	0e 94 cb 13 	call	0x2796	; 0x2796 <__udivmodsi4>
+    157c:	0e 94 c2 13 	call	0x2784	; 0x2784 <__udivmodsi4>
     1580:	21 50       	subi	r18, 0x01	; 1
     1582:	31 09       	sbc	r19, r1
     1584:	41 09       	sbc	r20, r1
@@ -4538,7 +4538,7 @@ void usart_spi_set_baudrate(USART_t *usart, uint32_t baud, uint32_t cpu_hz)
     1840:	b8 01       	movw	r22, r16
     1842:	a7 01       	movw	r20, r14
     1844:	96 01       	movw	r18, r12
-    1846:	a7 d7       	rcall	.+3918   	; 0x2796 <__udivmodsi4>
+    1846:	9e d7       	rcall	.+3900   	; 0x2784 <__udivmodsi4>
     1848:	21 50       	subi	r18, 0x01	; 1
     184a:	31 09       	sbc	r19, r1
     184c:	02 c0       	rjmp	.+4      	; 0x1852 <usart_spi_set_baudrate+0x48>
@@ -5852,14 +5852,14 @@ void pwm_set_frequency(struct pwm_config *config, uint16_t freq_hz)
     1de2:	90 e0       	ldi	r25, 0x00	; 0
     1de4:	a7 01       	movw	r20, r14
     1de6:	96 01       	movw	r18, r12
-    1de8:	d6 d4       	rcall	.+2476   	; 0x2796 <__udivmodsi4>
+    1de8:	cd d4       	rcall	.+2458   	; 0x2784 <__udivmodsi4>
     1dea:	ca 01       	movw	r24, r20
     1dec:	b9 01       	movw	r22, r18
     1dee:	2f ef       	ldi	r18, 0xFF	; 255
     1df0:	3f ef       	ldi	r19, 0xFF	; 255
     1df2:	40 e0       	ldi	r20, 0x00	; 0
     1df4:	50 e0       	ldi	r21, 0x00	; 0
-    1df6:	cf d4       	rcall	.+2462   	; 0x2796 <__udivmodsi4>
+    1df6:	c6 d4       	rcall	.+2444   	; 0x2784 <__udivmodsi4>
 	if (smallest_div < 1) {
     1df8:	21 15       	cp	r18, r1
     1dfa:	31 05       	cpc	r19, r1
@@ -5993,12 +5993,12 @@ void pwm_set_frequency(struct pwm_config *config, uint16_t freq_hz)
     1e68:	72 e1       	ldi	r23, 0x12	; 18
     1e6a:	8a e7       	ldi	r24, 0x7A	; 122
     1e6c:	90 e0       	ldi	r25, 0x00	; 0
-    1e6e:	93 d4       	rcall	.+2342   	; 0x2796 <__udivmodsi4>
+    1e6e:	8a d4       	rcall	.+2324   	; 0x2784 <__udivmodsi4>
     1e70:	ca 01       	movw	r24, r20
     1e72:	b9 01       	movw	r22, r18
     1e74:	a7 01       	movw	r20, r14
     1e76:	96 01       	movw	r18, r12
-    1e78:	8e d4       	rcall	.+2332   	; 0x2796 <__udivmodsi4>
+    1e78:	85 d4       	rcall	.+2314   	; 0x2784 <__udivmodsi4>
     1e7a:	2d 83       	std	Y+5, r18	; 0x05
     1e7c:	3e 83       	std	Y+6, r19	; 0x06
 
@@ -6055,7 +6055,7 @@ void pwm_init(struct pwm_config *config, enum pwm_tc_t tc,
     1eb4:	e2 50       	subi	r30, 0x02	; 2
     1eb6:	ff 4f       	sbci	r31, 0xFF	; 255
     1eb8:	8f 4f       	sbci	r24, 0xFF	; 255
-    1eba:	8f c4       	rjmp	.+2334   	; 0x27da <__tablejump2__>
+    1eba:	86 c4       	rjmp	.+2316   	; 0x27c8 <__tablejump2__>
 #if defined(TCC0)
 	case PWM_TCC0:
 		config->tc = &TCC0;
@@ -6361,12 +6361,12 @@ static inline void pwm_set_duty_cycle_percent(struct pwm_config *config,
     202c:	3e 81       	ldd	r19, Y+6	; 0x06
     202e:	a6 2f       	mov	r26, r22
     2030:	b0 e0       	ldi	r27, 0x00	; 0
-    2032:	db d3       	rcall	.+1974   	; 0x27ea <__umulhisi3>
+    2032:	d2 d3       	rcall	.+1956   	; 0x27d8 <__umulhisi3>
     2034:	24 e6       	ldi	r18, 0x64	; 100
     2036:	30 e0       	ldi	r19, 0x00	; 0
     2038:	40 e0       	ldi	r20, 0x00	; 0
     203a:	50 e0       	ldi	r21, 0x00	; 0
-    203c:	ac d3       	rcall	.+1880   	; 0x2796 <__udivmodsi4>
+    203c:	a3 d3       	rcall	.+1862   	; 0x2784 <__udivmodsi4>
     203e:	8a 81       	ldd	r24, Y+2	; 0x02
     2040:	e8 81       	ld	r30, Y
     2042:	f9 81       	ldd	r31, Y+1	; 0x01
@@ -8172,117 +8172,109 @@ int main(void)
     2752:	d1 f3       	breq	.-12     	; 0x2748 <main+0x6c>
     2754:	aa de       	rcall	.-684    	; 0x24aa <displayCharacter>
     2756:	62 e0       	ldi	r22, 0x02	; 2
-			delay_s(2);
+			
+			//pwm_start(&mypwm[0], 0);
+			
+			//While read switch is open - do nothing
+			
+			delay_s(5);
     2758:	87 e2       	ldi	r24, 0x27	; 39
     275a:	92 e2       	ldi	r25, 0x22	; 34
     275c:	63 dc       	rcall	.-1850   	; 0x2024 <pwm_start>
     275e:	6b ea       	ldi	r22, 0xAB	; 171
-    2760:	70 eb       	ldi	r23, 0xB0	; 176
-			
-			pwm_start(&mypwm[0], 0);
-    2762:	88 e2       	ldi	r24, 0x28	; 40
+    2760:	79 eb       	ldi	r23, 0xB9	; 185
+			pwm_start(&mypwm[0], 7.5);
+    2762:	85 e6       	ldi	r24, 0x65	; 101
     2764:	90 e0       	ldi	r25, 0x00	; 0
     2766:	72 dd       	rcall	.-1308   	; 0x224c <__portable_avr_delay_cycles>
 			
-			delay_s(5);
-    2768:	60 e0       	ldi	r22, 0x00	; 0
+			delay_s(2);
+    2768:	67 e0       	ldi	r22, 0x07	; 7
     276a:	87 e2       	ldi	r24, 0x27	; 39
     276c:	92 e2       	ldi	r25, 0x22	; 34
     276e:	5a dc       	rcall	.-1868   	; 0x2024 <pwm_start>
-			pwm_start(&mypwm[0], 7.5);
     2770:	6b ea       	ldi	r22, 0xAB	; 171
-    2772:	79 eb       	ldi	r23, 0xB9	; 185
-    2774:	85 e6       	ldi	r24, 0x65	; 101
-    2776:	90 e0       	ldi	r25, 0x00	; 0
 			
-			delay_s(2);
+			pwm_start(&mypwm[0], 0);
+    2772:	70 eb       	ldi	r23, 0xB0	; 176
+    2774:	88 e2       	ldi	r24, 0x28	; 40
+    2776:	90 e0       	ldi	r25, 0x00	; 0
     2778:	69 dd       	rcall	.-1326   	; 0x224c <__portable_avr_delay_cycles>
-    277a:	67 e0       	ldi	r22, 0x07	; 7
+    277a:	60 e0       	ldi	r22, 0x00	; 0
     277c:	87 e2       	ldi	r24, 0x27	; 39
     277e:	92 e2       	ldi	r25, 0x22	; 34
     2780:	51 dc       	rcall	.-1886   	; 0x2024 <pwm_start>
-    2782:	6b ea       	ldi	r22, 0xAB	; 171
-			
-			pwm_start(&mypwm[0], 0);
-    2784:	70 eb       	ldi	r23, 0xB0	; 176
-    2786:	88 e2       	ldi	r24, 0x28	; 40
-    2788:	90 e0       	ldi	r25, 0x00	; 0
-    278a:	60 dd       	rcall	.-1344   	; 0x224c <__portable_avr_delay_cycles>
-    278c:	60 e0       	ldi	r22, 0x00	; 0
-    278e:	87 e2       	ldi	r24, 0x27	; 39
-    2790:	92 e2       	ldi	r25, 0x22	; 34
-    2792:	48 dc       	rcall	.-1904   	; 0x2024 <pwm_start>
-    2794:	d9 cf       	rjmp	.-78     	; 0x2748 <main+0x6c>
+    2782:	e2 cf       	rjmp	.-60     	; 0x2748 <main+0x6c>
 
-00002796 <__udivmodsi4>:
-    2796:	a1 e2       	ldi	r26, 0x21	; 33
-    2798:	1a 2e       	mov	r1, r26
-    279a:	aa 1b       	sub	r26, r26
-    279c:	bb 1b       	sub	r27, r27
-    279e:	fd 01       	movw	r30, r26
-    27a0:	0d c0       	rjmp	.+26     	; 0x27bc <__udivmodsi4_ep>
+00002784 <__udivmodsi4>:
+    2784:	a1 e2       	ldi	r26, 0x21	; 33
+    2786:	1a 2e       	mov	r1, r26
+    2788:	aa 1b       	sub	r26, r26
+    278a:	bb 1b       	sub	r27, r27
+    278c:	fd 01       	movw	r30, r26
+    278e:	0d c0       	rjmp	.+26     	; 0x27aa <__udivmodsi4_ep>
 
-000027a2 <__udivmodsi4_loop>:
-    27a2:	aa 1f       	adc	r26, r26
-    27a4:	bb 1f       	adc	r27, r27
-    27a6:	ee 1f       	adc	r30, r30
-    27a8:	ff 1f       	adc	r31, r31
-    27aa:	a2 17       	cp	r26, r18
-    27ac:	b3 07       	cpc	r27, r19
-    27ae:	e4 07       	cpc	r30, r20
-    27b0:	f5 07       	cpc	r31, r21
-    27b2:	20 f0       	brcs	.+8      	; 0x27bc <__udivmodsi4_ep>
-    27b4:	a2 1b       	sub	r26, r18
-    27b6:	b3 0b       	sbc	r27, r19
-    27b8:	e4 0b       	sbc	r30, r20
-    27ba:	f5 0b       	sbc	r31, r21
+00002790 <__udivmodsi4_loop>:
+    2790:	aa 1f       	adc	r26, r26
+    2792:	bb 1f       	adc	r27, r27
+    2794:	ee 1f       	adc	r30, r30
+    2796:	ff 1f       	adc	r31, r31
+    2798:	a2 17       	cp	r26, r18
+    279a:	b3 07       	cpc	r27, r19
+    279c:	e4 07       	cpc	r30, r20
+    279e:	f5 07       	cpc	r31, r21
+    27a0:	20 f0       	brcs	.+8      	; 0x27aa <__udivmodsi4_ep>
+    27a2:	a2 1b       	sub	r26, r18
+    27a4:	b3 0b       	sbc	r27, r19
+    27a6:	e4 0b       	sbc	r30, r20
+    27a8:	f5 0b       	sbc	r31, r21
 
-000027bc <__udivmodsi4_ep>:
-    27bc:	66 1f       	adc	r22, r22
-    27be:	77 1f       	adc	r23, r23
-    27c0:	88 1f       	adc	r24, r24
-    27c2:	99 1f       	adc	r25, r25
-    27c4:	1a 94       	dec	r1
-    27c6:	69 f7       	brne	.-38     	; 0x27a2 <__udivmodsi4_loop>
-    27c8:	60 95       	com	r22
-    27ca:	70 95       	com	r23
-    27cc:	80 95       	com	r24
-    27ce:	90 95       	com	r25
-    27d0:	9b 01       	movw	r18, r22
-    27d2:	ac 01       	movw	r20, r24
-    27d4:	bd 01       	movw	r22, r26
-    27d6:	cf 01       	movw	r24, r30
-    27d8:	08 95       	ret
+000027aa <__udivmodsi4_ep>:
+    27aa:	66 1f       	adc	r22, r22
+    27ac:	77 1f       	adc	r23, r23
+    27ae:	88 1f       	adc	r24, r24
+    27b0:	99 1f       	adc	r25, r25
+    27b2:	1a 94       	dec	r1
+    27b4:	69 f7       	brne	.-38     	; 0x2790 <__udivmodsi4_loop>
+    27b6:	60 95       	com	r22
+    27b8:	70 95       	com	r23
+    27ba:	80 95       	com	r24
+    27bc:	90 95       	com	r25
+    27be:	9b 01       	movw	r18, r22
+    27c0:	ac 01       	movw	r20, r24
+    27c2:	bd 01       	movw	r22, r26
+    27c4:	cf 01       	movw	r24, r30
+    27c6:	08 95       	ret
 
-000027da <__tablejump2__>:
-    27da:	ee 0f       	add	r30, r30
-    27dc:	ff 1f       	adc	r31, r31
-    27de:	88 1f       	adc	r24, r24
-    27e0:	8b bf       	out	0x3b, r24	; 59
-    27e2:	07 90       	elpm	r0, Z+
-    27e4:	f6 91       	elpm	r31, Z
-    27e6:	e0 2d       	mov	r30, r0
-    27e8:	19 94       	eijmp
+000027c8 <__tablejump2__>:
+    27c8:	ee 0f       	add	r30, r30
+    27ca:	ff 1f       	adc	r31, r31
+    27cc:	88 1f       	adc	r24, r24
+    27ce:	8b bf       	out	0x3b, r24	; 59
+    27d0:	07 90       	elpm	r0, Z+
+    27d2:	f6 91       	elpm	r31, Z
+    27d4:	e0 2d       	mov	r30, r0
+    27d6:	19 94       	eijmp
 
-000027ea <__umulhisi3>:
-    27ea:	a2 9f       	mul	r26, r18
-    27ec:	b0 01       	movw	r22, r0
-    27ee:	b3 9f       	mul	r27, r19
-    27f0:	c0 01       	movw	r24, r0
-    27f2:	a3 9f       	mul	r26, r19
-    27f4:	70 0d       	add	r23, r0
-    27f6:	81 1d       	adc	r24, r1
-    27f8:	11 24       	eor	r1, r1
-    27fa:	91 1d       	adc	r25, r1
-    27fc:	b2 9f       	mul	r27, r18
-    27fe:	70 0d       	add	r23, r0
-    2800:	81 1d       	adc	r24, r1
-    2802:	11 24       	eor	r1, r1
-    2804:	91 1d       	adc	r25, r1
-    2806:	08 95       	ret
+000027d8 <__umulhisi3>:
+    27d8:	a2 9f       	mul	r26, r18
+    27da:	b0 01       	movw	r22, r0
+    27dc:	b3 9f       	mul	r27, r19
+    27de:	c0 01       	movw	r24, r0
+    27e0:	a3 9f       	mul	r26, r19
+    27e2:	70 0d       	add	r23, r0
+    27e4:	81 1d       	adc	r24, r1
+    27e6:	11 24       	eor	r1, r1
+    27e8:	91 1d       	adc	r25, r1
+    27ea:	b2 9f       	mul	r27, r18
+    27ec:	70 0d       	add	r23, r0
+    27ee:	81 1d       	adc	r24, r1
+    27f0:	11 24       	eor	r1, r1
+    27f2:	91 1d       	adc	r25, r1
+    27f4:	08 95       	ret
 
-00002808 <_exit>:
-    2808:	f8 94       	cli
+000027f6 <_exit>:
+    27f6:	f8 94       	cli
 
-0000280a <__stop_program>:
-    280a:	ff cf       	rjmp	.-2      	; 0x280a <__stop_program>
+000027f8 <__stop_program>:
+    27f8:	ff cf       	rjmp	.-2      	; 0x27f8 <__stop_program>

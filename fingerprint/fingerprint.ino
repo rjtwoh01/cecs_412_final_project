@@ -19,100 +19,111 @@
 #include <SoftwareSerial.h>
 #include <Wire.h>
 #include <ctype.h>
+#include "Adafruit_Trellis.h"
 
 #define bit9600Delay 84  
 #define halfBit9600Delay 42
 #define bit4800Delay 188 
-#define halfBit4800Delay 94 
+#define halfBit4800Delay 94
+#define MOMENTARY 0
+#define LATCHING 1
+// set the mode here
+#define MODE LATCHING
+
+Adafruit_Trellis matrix0 = Adafruit_Trellis();
+Adafruit_TrellisSet trellis =  Adafruit_TrellisSet(&matrix0);
+
+#define NUMTRELLIS 1
+#define numKeys (NUMTRELLIS * 16)
 
 byte rx = 6;
 byte tx = 7;
 byte SWval;
 
 int getFingerprintIDez();
-void sendSignal(int fingerID);
-void I2CSignal(int fingerID);
-void SWprint(int data);
 
+int getKeyPadButton();
+
+int runKeypad();
+
+int correctCombination[4] = { 0, 0, 0, 0 };
+int userCombination[4] = { 0, 0, 0, 0 };
+int keypadLoop();
 
 // pin #2 is IN from sensor (GREEN wire)
 // pin #3 is OUT from arduino  (WHITE wire)
 SoftwareSerial mySerial(2, 3);
-//SoftwareSerial sendSerial(1);
+
 
 
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
-//Adafruit_Fingerprint serialFinger =  Adafruit_Fingerprint(&sendSerial);
+#define INTPIN A2
 
 void setup()  
 {
   Serial.begin(9600);
-  Serial.println("fingertest");
+  //Serial.println("fingertest");
 
   // set the data rate for the sensor serial port
   finger.begin(57600);
 
-   //pinMode(1,OUTPUT); //Set PIN 1 to output
-  
-  if (finger.verifyPassword()) {
-    //Serial.println("Found fingerprint sensor!");
-  } else {
-    //Serial.println("Did not find fingerprint sensor :(");
-    while (1);
-  }
-  //Serial.println("Waiting for valid finger...");
-
-  pinMode(rx,INPUT);
-  pinMode(tx,OUTPUT);
-  digitalWrite(tx,HIGH);
-  digitalWrite(13,HIGH); //turn on debugging LED
-  //SWprint('h');  //debugging hello
-  //SWprint('i');
-  //SWprint(10); //carriage return
+  // INT pin requires a pullup
+  pinMode(INTPIN, INPUT);
+  digitalWrite(INTPIN, HIGH);
 }
 
-void SWprint(int data)
-{
-  byte mask;
-  //startbit
-  digitalWrite(tx,LOW);
-  delayMicroseconds(bit9600Delay);
-  for (mask = 0x01; mask>0; mask <<= 1) {
-    if (data & mask){ // choose bit
-     digitalWrite(tx,HIGH); // send 1
-    }
-    else{
-     digitalWrite(tx,LOW); // send 0
-    }
-    delayMicroseconds(bit9600Delay);
-  }
-  //stop bit
-  digitalWrite(tx, HIGH);
-  delayMicroseconds(bit9600Delay);
-}
-
-int SWread()
-{
-  byte val = 0;
-  while (digitalRead(rx));
-  //wait for start bit
-  if (digitalRead(rx) == LOW) {
-    delayMicroseconds(halfBit9600Delay);
-    for (int offset = 0; offset < 8; offset++) {
-     delayMicroseconds(bit9600Delay);
-     val |= digitalRead(rx) << offset;
-    }
-    //wait for stop bit + extra
-    delayMicroseconds(bit9600Delay); 
-    delayMicroseconds(bit9600Delay);
-    return val;
-  }
-}
-
-void loop()                     // run over and over again
+void loop() // run over and over again
 {
   getFingerprintIDez();
   delay(50);            //don't ned to run this at full speed.
+}
+
+int keypadLoop() {
+  delay(30); // 30ms delay is required, dont remove me!
+  
+  if (MODE == MOMENTARY) {
+    // If a button was just pressed or released...
+    if (trellis.readSwitches()) {
+      // go through every button
+      for (uint8_t i=0; i<numKeys; i++) {
+  // if it was pressed, turn it on
+  if (trellis.justPressed(i)) {
+    //Serial.print("v"); Serial.println(i);
+    trellis.setLED(i);
+    return i;
+  } 
+  // if it was released, turn it off
+  if (trellis.justReleased(i)) {
+    //Serial.print("^"); Serial.println(i);
+    trellis.clrLED(i);
+    return i;
+     }
+      // tell the trellis to set the LEDs we requested
+      //trellis.writeDisplay();
+    }
+   }
+   if (MODE == LATCHING) {
+    // If a button was just pressed or released...
+    if (trellis.readSwitches()) {
+      // go through every button
+      for (uint8_t i=0; i<numKeys; i++) {
+        // if it was pressed...
+ if (trellis.justPressed(i)) {
+    /*Serial.print("v");*/ //Serial.write(i);
+    // Alternate the LED
+    if (trellis.isLED(i))
+      trellis.clrLED(i);
+    else
+      trellis.setLED(i);
+      return i;
+        } 
+      }
+      // tell the trellis to set the LEDs we requested
+      //trellis.writeDisplay();
+    }
+  }
+}
+  return 0;
 }
 
 uint8_t getFingerprintID() {
@@ -191,26 +202,35 @@ int getFingerprintIDez() {
   if (p != FINGERPRINT_OK)  return -1;
   
   // found a match!
-  /*Serial.print("");*/ Serial.write(finger.fingerID); 
+  /*Serial.print("");*/ //Serial.write(finger.fingerID); 
   //Serial.print(" with confidence of "); Serial.println(finger.confidence);
-  sendSignal(finger.fingerID);
-  I2CSignal(finger.fingerID);
+  //sendSignal(finger.fingerID);
+  //I2CSignal(finger.fingerID);
+  int result = runKeypad();
+  if (result == 1 && finger.fingerID != -1)
+  {
+    Serial.write(finger.fingerID);
+  }
+  
   return finger.fingerID; 
 }
 
-void sendSignal(int fingerID) {
-  //Send a signal saying who the match is
+//return 1 if success, 0 if fail
+int runKeypad() {
+  int numOfKeysRequired = 4;
+  int index = 0;
+  while (index < numOfKeysRequired) {
+    int key = keypadLoop();
+    userCombination[index] = key;
+    index++;
+  }
 
-  //One or the other I think
-  //Serial.write(fingerID);
-  //Serial.println(fingerID);
-  //sendSerial.write(fingerID);
-  //Serial.write("H");
-  //Wire.write(fingerID);
-  //Serial.print("Sent signal\n");
+  for (int i = 0; i <= 4; i++) {
+    if (userCombination[i] != correctCombination[i]) {
+      return 0;
+    }
+  }
+
+  return 1;
 }
 
-void I2CSignal(int fingerID) {
-  //SWprint(fingerID);
-  //Wire.beginTransmission(
-}
