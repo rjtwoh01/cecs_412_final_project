@@ -52,12 +52,21 @@
  * running the ASF driver selector tool. Any changes will be discarded.
  */
 
+// From module: ADC - XMEGA A/AU Implementation
+#include <adc.h>
+
 // From module: CPU specific features
 #include <ccp.h>
 #include <xmega_reset_cause.h>
 
 // From module: Delay routines
 #include <delay.h>
+
+// From module: GFX Monochrome - Monochrome Graphic Library
+#include <gfx_mono.h>
+
+// From module: GFX Monochrome - System Font
+#include <sysfont.h>
 
 // From module: GPIO - General purpose Input/Output
 #include <gpio.h>
@@ -105,9 +114,6 @@
 
 // From module: TC - Timer Counter
 #include <tc.h>
-
-// From module: USART - Universal Synchronous/Asynchronous Receiver/Transmitter
-#include <usart.h>
 
 // From module: XMEGA compiler driver
 #include <compiler.h>

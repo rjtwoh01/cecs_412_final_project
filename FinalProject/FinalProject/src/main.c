@@ -4,11 +4,12 @@
 #include <conf_usart_example.h>
 #include <pwm.h>
 #include "led.h"
+#include <conf_example.h>
 
 int getCharacter(int input);
 void displayCharacter(uint8_t character);
+static void adc_handler(ADC_t *adc, uint8_t ch_mask, adc_result_t result);
 void resetScreen();
-
 const int Characters[37][6] = {
 	0x7E, 0x09, 0x09, 0x09, 0x7E, 0x00,  //A
 	0x7F, 0x49, 0x49, 0x36, 0x00, 0x00,  //B
@@ -57,22 +58,53 @@ uint8_t column_address;
 //! store the LCD controller start draw line
 uint8_t start_line_address = 0;
 
-//pwm
 struct pwm_config mypwm[4];
+signed int switchValue;
 
 int main(void)
 {
+	struct adc_config         adc_conf;
+	struct adc_channel_config adcch_conf;
+	
 	board_init();
 	sysclk_init();
+	sleepmgr_init();
+	irq_initialize_vectors();
+	cpu_irq_enable();
 
 	gpio_set_pin_high(NHD_C12832A1Z_BACKLIGHT); //turns backlight on
 
 	// initialize the interface (SPI), ST7565R LCD controller and LCD
 	st7565r_init();
 	
-	//pwm init
+	adc_read_configuration(&ADCB, &adc_conf);
+	adcch_read_configuration(&ADCB, ADC_CH0, &adcch_conf);
+	adc_set_conversion_parameters(&adc_conf, ADC_SIGN_ON, ADC_RES_8,
+	ADC_REF_VCC);
+	adc_set_clock_rate(&adc_conf, 200000UL);
+	adc_set_conversion_trigger(&adc_conf, ADC_TRIG_MANUAL, 1, 0);
+	adc_enable_internal_input(&adc_conf, ADC_INT_TEMPSENSE);
+	
+	adc_write_configuration(&ADCB, &adc_conf);
+	adc_set_callback(&ADCB, &adc_handler);
+	
+	/* Configure ADC channel 0:
+	* - single-ended measurement from temperature sensor
+	* - interrupt flag set on completed conversion
+	* - interrupts disabled
+	*/
+	adcch_set_input(&adcch_conf, ADCCH_POS_PIN1, ADCCH_NEG_NONE,
+	1);
+	adcch_set_interrupt_mode(&adcch_conf, ADCCH_MODE_COMPLETE);
+	adcch_enable_interrupt(&adcch_conf);
+	
+	adcch_write_configuration(&ADCB, ADC_CH0, &adcch_conf);
+	
+	// Enable the ADC and start the first conversion.
+	adc_enable(&ADCB);
+	adc_start_conversion(&ADCB, ADC_CH0);
+	
 	pwm_init(&mypwm[0], PWM_TCE0, PWM_CH_A, 50);
-
 	// set addresses at beginning of display
 	resetScreen();
 
@@ -98,16 +130,23 @@ int main(void)
 	while (true) {
 		input = usart_getchar(USART_SERIAL_EXAMPLE);
 		int userInput = getCharacter(input);
-		if(input != 0){
+
+		if(input > 0 && input <10){
 			displayCharacter(input);
 			pwm_start(&mypwm[0], 2);
-			//delay_s(2);
-			
+			int counter = 0;
 			//pwm_start(&mypwm[0], 0);
-			
+			while(switchValue < 50 && counter < 50) {
+				counter++;
+				delay_ms(100);
+			}
 			//While read switch is open - do nothing
+			while(switchValue > 50) {
+				delay_ms(100);
+			}
 			
-			delay_s(5);
+			delay_ms(500);
+
 			pwm_start(&mypwm[0], 7.5);
 			
 			delay_s(2);
@@ -298,4 +337,12 @@ void resetScreen()
 
 	st7565r_set_page_address(0);
 	st7565r_set_column_address(0);
+}
+
+static void adc_handler(ADC_t *adc, uint8_t ch_mask, adc_result_t result)
+{
+	switchValue = result;
+
+	// Start next conversion.
+	adc_start_conversion(adc, ch_mask);
 }

@@ -56,7 +56,9 @@ src/main.d src/main.o: ../src/main.c ../src/ASF/common/boards/board.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sleep.h \
  ../src/ASF/xmega/boards/xmega_a3bu_xplained/led.h \
  ../src/ASF/common/services/gpio/gpio.h \
- ../src/ASF/common/services/gpio/xmega_gpio/xmega_gpio.h
+ ../src/ASF/common/services/gpio/xmega_gpio/xmega_gpio.h \
+ ../src/config/conf_example.h ../src/ASF/xmega/drivers/adc/adc.h \
+ ../src/config/conf_adc.h ../src/ASF/xmega/drivers/nvm/nvm.h
 
 ../src/ASF/common/boards/board.h:
 
@@ -187,3 +189,11 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 ../src/ASF/common/services/gpio/gpio.h:
 
 ../src/ASF/common/services/gpio/xmega_gpio/xmega_gpio.h:
+
+../src/config/conf_example.h:
+
+../src/ASF/xmega/drivers/adc/adc.h:
+
+../src/config/conf_adc.h:
+
+../src/ASF/xmega/drivers/nvm/nvm.h:
